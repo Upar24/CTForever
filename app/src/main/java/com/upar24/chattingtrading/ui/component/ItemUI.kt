@@ -21,7 +21,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -83,14 +85,11 @@ import com.upar24.chattingtrading.util.KangDooShik.T9L1
 import com.upar24.chattingtrading.util.KangDooShik.T9L2
 import com.upar24.chattingtrading.util.KangDooShik.T9L3
 import com.upar24.chattingtrading.util.KangDooShik.T9L4
-import com.upar24.chattingtrading.util.KangDooShik.awal
 import com.upar24.chattingtrading.util.KangDooShik.cancel
 import com.upar24.chattingtrading.util.KangDooShik.nope
 import com.upar24.chattingtrading.util.KangDooShik.pleasewait
-import com.upar24.chattingtrading.util.KangDooShik.reguler
 import com.upar24.chattingtrading.util.KangDooShik.save
 import com.upar24.chattingtrading.util.KangDooShik.title
-import com.upar24.chattingtrading.util.KangDooShik.ultra
 import com.upar24.chattingtrading.util.Status
 import java.text.NumberFormat
 import java.util.*
@@ -107,7 +106,7 @@ fun ProfileInfoItem(number:String,desc:String){
             style = MaterialTheme.typography.button,
             color= MaterialTheme.colors.onBackground
         )
-        Spacer(Modifier.padding(2.dp))
+        Spacer(Modifier.padding(4.dp))
         Text(
             text=desc,
             style= MaterialTheme.typography.body1,
@@ -177,15 +176,18 @@ fun EditTextStringItem(state: TextFieldState = remember {TextFieldState()},text:
     )
 }
 @Composable
-fun EditTextItem(modifier: Modifier=Modifier, desc: String, state: TextFieldState=remember{ TextFieldState() }, keyboard : KeyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text)) {
+fun EditTextItem(modifier: Modifier=Modifier, desc: String, string: TextFieldState, keyboard: KeyboardOptions= KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text)) {
+    val status = remember{ mutableStateOf(TextFieldValue(text= string.text))}
     TextField(
-        value = state.text,
-        onValueChange ={string ->
-            if(string.isNotEmpty()){
-                val result = string.filter{it.isLetterOrDigit()}
-                state.text= NumberFormat.getNumberInstance(Locale.US).format(result.toLong())
+        value = status.value,
+        onValueChange ={lamo ->
+            if(lamo.text.isNotEmpty()){
+                var result = lamo.text.filter { it.isLetterOrDigit() }
+                result = NumberFormat.getNumberInstance(Locale.US).format(result.toLong())
+                status.value = TextFieldValue(text=result,selection=TextRange(result.length.plus(1)))
+                string.text=status.value.text
             }else{
-                state.text="0"
+                status.value = TextFieldValue("0")
             }
         },
         placeholder = {Text(desc,style = MaterialTheme.typography.body1)},
@@ -198,7 +200,7 @@ fun EditTextItem(modifier: Modifier=Modifier, desc: String, state: TextFieldStat
             unfocusedIndicatorColor = Color.Transparent
         ),
         textStyle=MaterialTheme.typography.body2,
-        singleLine = true
+        maxLines=7
     )
 }
 @Composable
@@ -343,7 +345,9 @@ fun TradingCard(username:String, trading: Trading, editClick: () -> Unit, delete
                     }
                 }
             }
+            Spacer(Modifier.padding(2.dp))
             TwoTextItem("Description", trading.desc.toString())
+            Spacer(Modifier.padding(2.dp))
             Row(
                 Modifier
                     .fillMaxWidth(),horizontalArrangement =Arrangement.SpaceBetween){
@@ -501,10 +505,22 @@ fun EditProfileDialog(user: User,onClick: () -> Unit,username: String){
                     .clickable(onClick = {
                         profileVM.updateProfile(
                             UpdateUserRequest(
-                                name = if(nameState.text.length > 101)nameState.text.substring(0,100) else nameState.text,
-                                clubName =if(clubNameState.text.length > 101) clubNameState.text.substring(0,100) else clubNameState.text,
-                                ign = if(ignState.text.length > 101) ignState.text.substring(0,100) else ignState.text,
-                                bio = if(bioState.text.length > 501) bioState.text.substring(0,500) else bioState.text
+                                name = if (nameState.text.length > 101) nameState.text.substring(
+                                    0,
+                                    100
+                                ) else nameState.text,
+                                clubName = if (clubNameState.text.length > 101) clubNameState.text.substring(
+                                    0,
+                                    100
+                                ) else clubNameState.text,
+                                ign = if (ignState.text.length > 101) ignState.text.substring(
+                                    0,
+                                    100
+                                ) else ignState.text,
+                                bio = if (bioState.text.length > 501) bioState.text.substring(
+                                    0,
+                                    500
+                                ) else bioState.text
                             ), username
                         )
                         openEdit = false
@@ -538,80 +554,6 @@ fun WallList(wallList: List<Wall>, navController: NavHostController, modifier: M
         }
     }
 
-}
-@Composable
-fun SaveTodayDialog(today: Today,onClick: () -> Unit){
-    Column {
-        var openDialog by remember { mutableStateOf(true)}
-        val homeVM = hiltViewModel<HomeViewModel>()
-        val idState = remember { TextFieldState(today._id) }
-        val regulerState = remember { TextFieldState(today.reguler) }
-        val ultraState = remember { TextFieldState(today.ultra) }
-        val authVM= hiltViewModel<AuthViewModel>()
-        if(openDialog){
-            AlertDialog(
-                backgroundColor=MaterialTheme.colors.secondary,
-                onDismissRequest=onClick,
-                title = { Row(
-                    Modifier
-                        .padding(8.dp)
-                        .fillMaxWidth(),horizontalArrangement = Arrangement.Center)
-                {Text(text = "POTD",style = MaterialTheme.typography.h2,color=MaterialTheme.colors.onBackground) }},
-                text = {
-                    Row(
-                        Modifier
-                            .padding(8.dp),
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Row(Modifier.weight(2f),horizontalArrangement = Arrangement.Center,verticalAlignment = Alignment.CenterVertically){
-                            TextFieldOutlined(desc = "id", idState)
-                        }
-                        Row(Modifier.weight(4f),horizontalArrangement = Arrangement.Center,verticalAlignment = Alignment.CenterVertically){
-                            TextFieldOutlined(desc = reguler, regulerState)
-                        }
-                        Row(Modifier.weight(4f),horizontalArrangement = Arrangement.Center,verticalAlignment = Alignment.CenterVertically){
-                            TextFieldOutlined(desc = ultra, ultraState)
-                        }
-                    }
-                },
-                confirmButton = {
-                    Text(
-                        save,
-                        Modifier
-                            .padding(8.dp)
-                            .clickable(onClick = {
-                                authVM.isLoggedIn()
-                                authVM.authenticateApi(
-                                    authVM.usernamevm ?: "",
-                                    authVM.passwordvm ?: ""
-                                )
-                                homeVM.saveToday(
-                                    Today(
-                                        regulerState.text,
-                                        ultraState.text,
-                                        idState.text
-                                    )
-                                )
-                                openDialog = false
-                            }),
-                        style = MaterialTheme.typography.subtitle2,
-                        color = MaterialTheme.colors.primary
-                    )
-                },
-                dismissButton = {
-                    Text(
-                        cancel,
-                        Modifier
-                            .padding(8.dp)
-                            .clickable(onClick = onClick),
-                        style = MaterialTheme.typography.subtitle2,
-                        color = Color.Red
-                    )
-                }
-            )
-        }
-    }
 }
 @Composable
 fun AddTradingDialog(trading: Trading? ){
@@ -689,12 +631,30 @@ fun AddTradingDialog(trading: Trading? ){
                                     addVM.saveTrading(
                                         Trading(
                                             _id = trading?._id.toString(),
-                                            title = if(titleState.text.length > 51)titleState.text.substring(0,50) else titleState.text,
-                                            desc = if(descState.text.length > 101)descState.text.substring(0,100) else descState.text,
-                                            itemBuying = if(itemBuyingState.text.length > 101)itemBuyingState.text.substring(0,100) else itemBuyingState.text,
-                                            amountBuying = if(amountBuyingState.text.length > 51) amountBuyingState.text.substring(0,50) else amountBuyingState.text,
-                                            itemSelling = if(itemSellingState.text.length > 101) itemSellingState.text.substring(0,100) else itemSellingState.text,
-                                            amountSelling = if(amountSellingState.text.length > 51)amountSellingState.text.substring(0,50) else amountSellingState.text
+                                            title = if (titleState.text.length > 51) titleState.text.substring(
+                                                0,
+                                                50
+                                            ) else titleState.text,
+                                            desc = if (descState.text.length > 101) descState.text.substring(
+                                                0,
+                                                100
+                                            ) else descState.text,
+                                            itemBuying = if (itemBuyingState.text.length > 101) itemBuyingState.text.substring(
+                                                0,
+                                                100
+                                            ) else itemBuyingState.text,
+                                            amountBuying = if (amountBuyingState.text.length > 51) amountBuyingState.text.substring(
+                                                0,
+                                                50
+                                            ) else amountBuyingState.text,
+                                            itemSelling = if (itemSellingState.text.length > 101) itemSellingState.text.substring(
+                                                0,
+                                                100
+                                            ) else itemSellingState.text,
+                                            amountSelling = if (amountSellingState.text.length > 51) amountSellingState.text.substring(
+                                                0,
+                                                50
+                                            ) else amountSellingState.text
                                         )
                                     )
                                     openDialog = false
@@ -707,202 +667,6 @@ fun AddTradingDialog(trading: Trading? ){
                             .clickable(onClick = {
                                 openDialog = false
                             }),color=Color.Red,style=MaterialTheme.typography.subtitle2)
-                }
-            )
-        }
-    }
-}
-@Composable
-fun SaveDropDialog(onClick: () -> Unit){
-    Column {
-        var openDialog by remember { mutableStateOf(true)}
-        val homeVM = hiltViewModel<HomeViewModel>()
-        val idState = remember { TextFieldState() }
-        val dayState= remember {TextFieldState()}
-        val roleState = remember { TextFieldState() }
-        val nameState = remember { TextFieldState() }
-        val durationState = remember { TextFieldState() }
-        val authVM= hiltViewModel<AuthViewModel>()
-        if(openDialog){
-            AlertDialog(
-                backgroundColor=MaterialTheme.colors.secondary,
-                onDismissRequest=onClick,
-                title ={ Row(
-                    Modifier
-                        .padding(8.dp)
-                        .fillMaxWidth(),horizontalArrangement = Arrangement.Center)
-                {Text(text = "DROPPED",style = MaterialTheme.typography.h2,color=MaterialTheme.colors.onBackground) }},
-                text = {
-                    Column(
-                        Modifier
-                            .padding(8.dp),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = CenterHorizontally
-                    ){
-                        ButtonClickItem(desc = "Close", onClick = { openDialog = false})
-                        Row(Modifier.fillMaxWidth()){
-                            Row(Modifier.weight(1f)){
-                                TextFieldOutlined(desc = "id", idState)}
-                            Row(Modifier.weight(1f)){
-                                TextFieldOutlined(desc = "day", dayState)}
-                            Row(Modifier.weight(1f)){
-                                TextFieldOutlined(desc = "role", roleState)}
-                        }
-                        Row(Modifier.fillMaxWidth()){
-                            Row(Modifier.weight(1f)){
-                                TextFieldOutlined(desc = "name", nameState)}
-                            Row(Modifier.weight(1f)){
-                                TextFieldOutlined(desc = "duration", durationState)}
-                        }
-                    }
-                },
-                confirmButton ={
-                    Text(save,
-                        Modifier
-                            .padding(8.dp)
-                            .clickable(onClick = {
-                                authVM.isLoggedIn()
-                                authVM.authenticateApi(
-                                    authVM.usernamevm ?: "",
-                                    authVM.passwordvm ?: ""
-                                )
-                                homeVM.saveDrop(
-                                    Dropped(
-                                        roleState.text,
-                                        nameState.text,
-                                        durationState.text,
-                                        dayState.text,
-                                        idState.text
-                                    )
-                                )
-                                homeVM.getDropList()
-                                openDialog = false
-                            }),style=MaterialTheme.typography.subtitle2,color=MaterialTheme.colors.primary)},
-                dismissButton = {
-                    Text("Delete",
-                        Modifier
-                            .padding(8.dp)
-                            .clickable(onClick = {
-                                openDialog = false
-                                authVM.isLoggedIn()
-                                authVM.authenticateApi(
-                                    authVM.usernamevm ?: "",
-                                    authVM.passwordvm ?: ""
-                                )
-                                homeVM.deleteDrop(
-                                    Dropped(
-                                        role = roleState.text,
-                                        name = nameState.text,
-                                        duration = durationState.text,
-                                        day = dayState.text,
-                                        _id = idState.text
-                                    )
-                                )
-                                homeVM.getDropList()
-                            }), color = Color.Red, style = MaterialTheme.typography.subtitle2)
-                }
-            )
-        }
-    }
-}
-@Composable
-fun SavePartyDialog(party:Party){
-    Column {
-        var openDialog by remember { mutableStateOf(true)}
-        val homeVM = hiltViewModel<HomeViewModel>()
-        val authVM = hiltViewModel<AuthViewModel>()
-        val idState = remember { TextFieldState(party._id) }
-        val noState = remember { TextFieldState(party.no) }
-        val roleState = remember { TextFieldState(party.role) }
-        val nameState = remember { TextFieldState(party.name) }
-        val durationState = remember { TextFieldState(party.duration) }
-        val statusState = remember { TextFieldState(party.status) }
-        if(openDialog){
-            AlertDialog(
-                backgroundColor=MaterialTheme.colors.secondary,
-                onDismissRequest={openDialog = false},
-                title ={ Row(
-                    Modifier
-                        .padding(8.dp)
-                        .fillMaxWidth(),horizontalArrangement = Arrangement.Center)
-                {Text(text = "PARTY",style = MaterialTheme.typography.h2,color=MaterialTheme.colors.onBackground) }},
-                text = {
-                    Column(
-                        Modifier
-                            .padding(8.dp),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = CenterHorizontally
-                    ) {
-                        ButtonClickItem(desc = "Close", onClick = { openDialog= false},bordercolor = MaterialTheme.colors.onSurface,colors = ButtonDefaults.buttonColors(MaterialTheme.colors.surface))
-                        Row(Modifier.fillMaxWidth()){
-                            Row(Modifier.weight(1f)){
-                                TextFieldOutlined(desc = "id", idState)}
-                            Row(Modifier.weight(1f)){
-                                TextFieldOutlined(desc = "no", noState)}
-                            Row(Modifier.weight(2f)){
-                                TextFieldOutlined(desc = "duration", durationState)}
-                        }
-                        Row(Modifier.fillMaxWidth()){
-                            Row(Modifier.weight(1.5f)){
-                                TextFieldOutlined(desc = "status", statusState)}
-                            Row(Modifier.weight(1.5f)){
-                                TextFieldOutlined(desc = "role", roleState)}
-                            Row(Modifier.weight(2f)){
-                                TextFieldOutlined(desc = "name", nameState)}
-                        }
-                    }
-                },
-                confirmButton ={
-                    Text(save,
-                        Modifier
-                            .padding(8.dp)
-                            .clickable(onClick = {
-                                authVM.isLoggedIn()
-                                authVM.authenticateApi(
-                                    authVM.usernamevm ?: "",
-                                    authVM.passwordvm ?: ""
-                                )
-                                homeVM.saveParty(party.role,
-                                    Party(
-                                        role = roleState.text,
-                                        no = noState.text,
-                                        name = nameState.text,
-                                        duration = durationState.text,
-                                        status = statusState.text,
-                                        check =party.check,
-                                        nope=party.nope,
-                                        drop=party.drop,
-                                        _id = idState.text
-                                    )
-                                )
-                                openDialog = false
-                            }),
-                        style=MaterialTheme.typography.subtitle2,color=MaterialTheme.colors.primary)},
-                dismissButton = {
-                    Text(awal,
-                        Modifier
-                            .padding(8.dp)
-                            .clickable(onClick = {
-                                authVM.isLoggedIn()
-                                authVM.authenticateApi(
-                                    authVM.usernamevm ?: "",
-                                    authVM.passwordvm ?: ""
-                                )
-                                homeVM.saveParty(party.role,
-                                    Party(
-                                        role = roleState.text,
-                                        no = noState.text,
-                                        name = nameState.text,
-                                        duration = durationState.text,
-                                        status = statusState.text,
-                                        check = listOf(),
-                                        nope = listOf(),
-                                        drop = listOf(),
-                                        _id = idState.text
-                                    )
-                                )
-                                openDialog = false
-                            }),style=MaterialTheme.typography.subtitle2,color=MaterialTheme.colors.primary)
                 }
             )
         }

@@ -129,35 +129,16 @@ interface CTFApi {
         @Body query:OneRequest
     ):Response<List<Trading>>
 
-    @POST(savePartyPath)
-    suspend fun saveParty(
-        @Body party: Party
-    ):Response<SimpleResponse>
     @POST(getPartyPath)
     suspend fun getPartyList(
         @Body query: OneRequest
     ):Response<List<Party>>
 
-    @POST(saveDropPath)
-    suspend fun saveDrop(
-        @Body dropped: Dropped
-    ):Response<SimpleResponse>
     @GET(saveDropPath)
     suspend fun getDrop():Response<List<Dropped>>
 
-    @POST(saveTodayPath)
-    suspend fun saveToday(
-        @Body today: Today
-    ):Response<SimpleResponse>
     @GET(saveTodayPath)
     suspend fun getToday():Response<Today>
-
-    @POST(deleteDropPath)
-    suspend fun deleteDrop(
-        @Body dropped: Dropped
-    ):Response<SimpleResponse>
-    @GET(deleteDropPath)
-    suspend fun deletion():Response<SimpleResponse>
 
     @POST(toggleCheckPath)
     suspend fun toggleCheck(

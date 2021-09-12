@@ -58,26 +58,11 @@ class HomeViewModel @Inject constructor(
             _getChatStatus.postValue(result)
         }
     }
-    fun saveParty(query: String,party: Party){
-        _savePartyStatus.postValue(Resource.loading(null))
-        viewModelScope.launch {
-            val result = repository.saveParty(party)
-            _savePartyStatus.postValue(result)
-            getPartyList(query)
-        }
-    }
     fun getPartyList(query:String){
         _partyListStatus.postValue(Resource.loading(null))
         viewModelScope.launch {
             val result = repository.getPartyList(query)
             _partyListStatus.postValue(result)
-        }
-    }
-    fun saveDrop(dropped: Dropped){
-        _saveDropStatus.postValue(Resource.loading(null))
-        viewModelScope.launch {
-            val result = repository.saveDrop(dropped)
-            _saveDropStatus.postValue(result)
         }
     }
     fun getDropList(){
@@ -87,25 +72,11 @@ class HomeViewModel @Inject constructor(
             _dropListStatus.postValue(result)
         }
     }
-    fun saveToday(today: Today){
-        _saveTodayStatus.postValue(Resource.loading(null))
-        viewModelScope.launch {
-            val result = repository.saveToday(today)
-            _saveTodayStatus.postValue(result)
-        }
-    }
     fun getToday(){
         _todayStatus.postValue(Resource.loading(null))
         viewModelScope.launch {
             val result = repository.getToday()
             _todayStatus.postValue(result)
-        }
-    }
-    fun deleteDrop(dropped: Dropped){
-        _deleteDropStatus.postValue(Resource.loading(null))
-        viewModelScope.launch {
-            val result = repository.deleteDrop(dropped)
-            _deleteDropStatus.postValue(result)
         }
     }
     fun toggleCheck(query: String,party: Party)=viewModelScope.launch {

@@ -144,9 +144,6 @@ fun PartyScreen(navController: NavHostController) {
         }
     }
     Column{
-        if (saveTodayDialog) SaveTodayDialog(today,onClick={saveTodayDialog = !saveTodayDialog})
-        if (saveDropDialog) SaveDropDialog(onClick={saveDropDialog=!saveDropDialog})
-        if (savePartyDialog) SavePartyDialog(Party(role= visibleParty,"","",status=NA))
         if (userListDialog) ObserveUserList(onClick={userListDialog = !userListDialog},navController = navController,title)
         Spacer(Modifier.padding(2.dp))
         ConstraintLayout(
@@ -244,7 +241,7 @@ fun PartyScreen(navController: NavHostController) {
             allList.forEach { party->
                 Card(
                     Modifier.fillMaxWidth(),
-                    border = BorderStroke(if(party.status== NA)1.dp else 3.dp,
+                    border = BorderStroke(if(party.status== NA)1.dp else 2.4.dp,
                         when(party.status){
                             NA -> colors.primaryVariant
                             dropped -> colors.onError
@@ -256,7 +253,6 @@ fun PartyScreen(navController: NavHostController) {
                 ){
 
                     var editPartyDialog by remember { mutableStateOf(false) }
-                    if(editPartyDialog) SavePartyDialog(party = party)
                     Row(
                         Modifier
                             .fillMaxWidth()
@@ -281,17 +277,17 @@ fun PartyScreen(navController: NavHostController) {
                         Row(Modifier.fillMaxWidth(), Arrangement.SpaceEvenly) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Text(party.status,color= colors.onBackground,style=MaterialTheme.typography.body1)
-                                Spacer(modifier = Modifier.padding(2.dp))
+                                Spacer(modifier = Modifier.padding(4.dp))
                                 Text(status,color= colors.onBackground,style=MaterialTheme.typography.subtitle2)
                             }
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 if(check){
-                                    Text(countChecked.toString(),Modifier
+                                    Text(countChecked.toString(),Modifier.padding(start=4.dp,end=4.dp)
                                         .clickable{
                                             title="CHECKED BY"
                                             homeVM.getListUser(party.check)
                                             userListDialog = !userListDialog}, colors.error,style=MaterialTheme.typography.body1)
-                                    Spacer(modifier = Modifier.padding(2.dp))
+                                    Spacer(modifier = Modifier.padding(4.dp))
                                     Text("Checked",Modifier.clickable {
                                         if(username == NO_USERNAME){
                                             Toast.makeText( context,"Please Login First.", Toast.LENGTH_SHORT,
@@ -300,11 +296,11 @@ fun PartyScreen(navController: NavHostController) {
                                             homeVM.toggleCheck(visibleParty,party)
                                         }}, colors.error,style=MaterialTheme.typography.subtitle2)
                                 }else{
-                                    Text(countChecked.toString(),Modifier
+                                    Text(countChecked.toString(),Modifier.padding(start=4.dp,end=4.dp)
                                         .clickable{homeVM.getListUser(party.check)
                                             userListDialog = !userListDialog},
                                         colors.onBackground,style=MaterialTheme.typography.body1)
-                                    Spacer(modifier = Modifier.padding(2.dp))
+                                    Spacer(modifier = Modifier.padding(4.dp))
                                     Text("Check",Modifier.clickable {
                                         if(username == NO_USERNAME){
                                             Toast.makeText( context,"Please Login First.", Toast.LENGTH_SHORT,
@@ -317,12 +313,12 @@ fun PartyScreen(navController: NavHostController) {
                             }
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 if(nope){
-                                    Text(countNope.toString(),Modifier
+                                    Text(countNope.toString(),Modifier.padding(start=4.dp,end=4.dp)
                                         .clickable{
                                             title="NOPE BY"
                                             homeVM.getListUser(party.nope)
                                             userListDialog = !userListDialog},Color.Red,style=MaterialTheme.typography.body1)
-                                    Spacer(modifier = Modifier.padding(2.dp))
+                                    Spacer(modifier = Modifier.padding(4.dp))
                                     Text("Nope",Modifier.clickable {
                                         if(username == NO_USERNAME){
                                             Toast.makeText( context,"Please Login First.", Toast.LENGTH_SHORT).show()
@@ -330,11 +326,11 @@ fun PartyScreen(navController: NavHostController) {
                                             homeVM.toggleNope(visibleParty,party)
                                         }},Color.Red,style=MaterialTheme.typography.subtitle2)
                                 }else{
-                                    Text(countNope.toString(),Modifier
+                                    Text(countNope.toString(),Modifier.padding(start=4.dp,end=4.dp)
                                         .clickable{homeVM.getListUser(party.nope)
                                             userListDialog = !userListDialog},
                                         colors.onBackground,style=MaterialTheme.typography.body1)
-                                    Spacer(modifier = Modifier.padding(2.dp))
+                                    Spacer(modifier = Modifier.padding(4.dp))
                                     Text("Nope",Modifier.clickable {
                                         if(username == NO_USERNAME){
                                             Toast.makeText( context,"Please Login First.", Toast.LENGTH_SHORT).show()
@@ -347,13 +343,13 @@ fun PartyScreen(navController: NavHostController) {
                                 if(drop){
 
                                     Text(countDropped.toString(),
-                                        Modifier
+                                        Modifier.padding(start=4.dp,end=4.dp)
                                             .clickable{
                                                 title="DROPPED BY"
                                                 homeVM.getListUser(party.drop)
                                                 userListDialog = !userListDialog},
                                         colors.onError,style=MaterialTheme.typography.body1)
-                                    Spacer(modifier = Modifier.padding(2.dp))
+                                    Spacer(modifier = Modifier.padding(4.dp))
                                     Text("Dropped",Modifier.clickable {
                                         if(username == NO_USERNAME){
                                             Toast.makeText( context,"Please Login First.", Toast.LENGTH_SHORT).show()
@@ -361,11 +357,11 @@ fun PartyScreen(navController: NavHostController) {
                                             homeVM.toggleDrop(visibleParty,party)
                                         }}, colors.onError,style=MaterialTheme.typography.subtitle2)
                                 }else{
-                                    Text(countDropped.toString(),Modifier
+                                    Text(countDropped.toString(),Modifier.padding(start=4.dp,end=4.dp)
                                         .clickable{homeVM.getListUser(party.drop)
                                             userListDialog = !userListDialog},
                                         colors.onBackground,style=MaterialTheme.typography.body1)
-                                    Spacer(modifier = Modifier.padding(2.dp))
+                                    Spacer(modifier = Modifier.padding(4.dp))
                                     Text("Drop",Modifier.clickable {
                                         if(username == NO_USERNAME){
                                             Toast.makeText( context,"Please Login First.", Toast.LENGTH_SHORT).show()

@@ -1,9 +1,8 @@
 package com.upar24.chattingtrading.ui.component
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.upar24.chattingtrading.ui.auth.AuthViewModel
@@ -65,6 +64,7 @@ import kotlin.math.roundToLong
 class TextFieldState(string: String=""){
     var text : String by mutableStateOf(string)
 }
+
 fun getTimePost(timePost:Long):String{
     val endTime= System.currentTimeMillis()
     val diff= (endTime - timePost) / 1000

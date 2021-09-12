@@ -133,7 +133,7 @@ fun LoginScreen(
         Spacer(Modifier.size(8.dp))
         TextFieldOutlined(password,passwordState)
         Spacer(Modifier.size(8.dp))
-        if(success)Text("${usernameState.text} is successfully registered.")
+        if(success)Text("${usernameState.text} is successfully login.")
         Spacer(Modifier.size(40.dp))
         ButtonClickItem(desc= login,onClick={
             if(usernameState.text.isEmpty() || passwordState.text.isEmpty()){

@@ -234,18 +234,6 @@ class CTFRepository @Inject constructor(
             Resource.error("Couldnt connect to the server",null)
         }
     }
-    suspend fun saveParty(party: Party)= withContext(Dispatchers.IO){
-        try {
-            val response=ctfApi.saveParty( party)
-            if(response.isSuccessful && response.body()!!.successful){
-                Resource.success(response.body()!!.message)
-            }else{
-                Resource.error(response.message(),null)
-            }
-        }catch (e:Exception){
-            Resource.error("Couldnt connect to the server",null)
-        }
-    }
     suspend fun getPartyList(query: String)= withContext(Dispatchers.IO){
         try {
             val response= ctfApi.getPartyList(OneRequest(query))
@@ -255,18 +243,6 @@ class CTFRepository @Inject constructor(
                 Resource.error(response.message(),null)
             }
         }catch(e:Exception){
-            Resource.error("Couldnt connect to the server",null)
-        }
-    }
-    suspend fun saveDrop(dropped: Dropped)= withContext(Dispatchers.IO){
-        try {
-            val response=ctfApi.saveDrop( dropped)
-            if(response.isSuccessful && response.body()!!.successful){
-                Resource.success(response.body()!!.message)
-            }else{
-                Resource.error(response.body()?.message ?: response.message(), null)
-            }
-        }catch (e:Exception){
             Resource.error("Couldnt connect to the server",null)
         }
     }
@@ -282,18 +258,6 @@ class CTFRepository @Inject constructor(
             Resource.error("Couldnt connect to the server",null)
         }
     }
-    suspend fun saveToday(today: Today)= withContext(Dispatchers.IO){
-        try {
-            val response=ctfApi.saveToday(today)
-            if(response.isSuccessful && response.body()!!.successful){
-                Resource.success(response.body()!!.message)
-            }else{
-                Resource.error(response.body()?.message ?: response.message(), null)
-            }
-        }catch (e:Exception){
-            Resource.error("Couldnt connect to the server",null)
-        }
-    }
     suspend fun getToday()= withContext(Dispatchers.IO){
         try {
             val response= ctfApi.getToday()
@@ -303,29 +267,6 @@ class CTFRepository @Inject constructor(
                 Resource.error(response.message(),null)
             }
         }catch(e:Exception){
-            Resource.error("Couldnt connect to the server",null)
-        }
-    }
-    suspend fun deleteDrop(dropped: Dropped)= withContext(Dispatchers.IO){
-        try {
-            val response=ctfApi.deleteDrop(dropped)
-            if(response.isSuccessful && response.body()!!.successful){
-                Resource.success(response.body()!!.message)
-            }else{
-                Resource.error(response.body()?.message ?: response.message(),null)
-            }
-        }catch (e:Exception){
-            Resource.error("Couldnt connect to the server",null)
-        }  }
-    suspend fun deletion()= withContext(Dispatchers.IO){
-        try {
-            val response=ctfApi.deletion()
-            if(response.isSuccessful){
-                Resource.success(response.body()?.message)
-            }else{
-                Resource.error(response.message(),null)
-            }
-        }catch (e:Exception){
             Resource.error("Couldnt connect to the server",null)
         }
     }

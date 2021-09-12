@@ -44,6 +44,7 @@ fun ProfileScreen(navController: NavHostController) {
         verticalArrangement = Arrangement.Center
     ) {
         AdvertView()
+        Spacer(Modifier.padding(2.dp))
         val authVM = hiltViewModel<AuthViewModel>()
         val profileVM = hiltViewModel<ProfileViewModel>()
         val addVM = hiltViewModel<AddViewModel>()
@@ -149,7 +150,6 @@ fun ProfileScreen(navController: NavHostController) {
         }
         Row(Modifier.fillMaxWidth(), Arrangement.SpaceBetween) {
             Text(username,style= MaterialTheme.typography.subtitle1,color=MaterialTheme.colors.onBackground)
-            Text("DELETE",Modifier.clickable(onClick = {profileVM.deletion()}))
             Text(if (!seeMore) showmore else showless,
                 modifier = Modifier
                     .clickable {

@@ -76,13 +76,6 @@ class ProfileViewModel @Inject constructor(
             getWall(username)
         }
     }
-    fun deletion(){
-        _deletionStatus.postValue(Resource.loading(null))
-        viewModelScope.launch {
-            val result= repository.deletion()
-            _deletionStatus.postValue(result)
-        }
-    }
     fun listUserClub(club:String){
         _listUserClubStatus.postValue(Resource.loading(null))
         viewModelScope.launch {

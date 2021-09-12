@@ -24,7 +24,6 @@ import com.upar24.chattingtrading.util.KangDooShik.result
 import com.upar24.chattingtrading.util.KangDooShik.ts
 import com.upar24.chattingtrading.util.KangDooShik.upgrade
 import com.upar24.chattingtrading.util.KangDooShik.volley
-import androidx.compose.runtime.getValue as getValue1
 
 @Composable
 fun CalculationScreen() {
@@ -71,9 +70,9 @@ fun DvpDisplay(){
         var textString by remember { mutableStateOf("")}
         val initState = remember { TextFieldState("") }
         val limitState = remember { TextFieldState("") }
-        EditTextItem(desc = init,state =initState,keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number))
+        EditTextItem(desc = init,string =initState,keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number))
         Spacer(Modifier.padding(8.dp))
-        EditTextItem(desc = limit,state =limitState,keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number))
+        EditTextItem(desc = limit,string =limitState,keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number))
         Spacer(Modifier.padding(16.dp))
         Row(horizontalArrangement = Arrangement.SpaceBetween,verticalAlignment = Alignment.CenterVertically){
             ButtonClickItem(
@@ -83,7 +82,7 @@ fun DvpDisplay(){
                     textString=if(initState.text.isEmpty() || limitState.text.isEmpty())"Please fill both of the fields" else
                         hoppingValueFunction(initState.text.filter { it.isLetterOrDigit()}.toLong(),limitState.text.filter { it.isLetterOrDigit()}.toLong(),"A")},
                 bordercolor= if(visibleDvp==volley)MaterialTheme.colors.primary else MaterialTheme.colors.background,
-                colors=if(visibleDvp==volley) ButtonDefaults.buttonColors( MaterialTheme.colors.background ) else ButtonDefaults.buttonColors(MaterialTheme.colors.primary)
+                colors=if(visibleDvp==volley)ButtonDefaults.buttonColors( MaterialTheme.colors.background ) else ButtonDefaults.buttonColors(MaterialTheme.colors.primary)
             )
             Spacer(Modifier.padding(8.dp))
             ButtonClickItem(
@@ -119,7 +118,7 @@ fun UpgradeDisplay(){
         val currentStatusState = remember { TextFieldState("") }
         val dropDormState = remember { TextFieldState(nope) }
         val hireDormState = remember { TextFieldState(nope) }
-        EditTextItem(desc = "Current Status",state = currentStatusState,keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number))
+        EditTextItem(desc = "Current Status", string = currentStatusState, keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number))
         Spacer(Modifier.padding(8.dp))
         DropDownListItem(desc = "Drop a dormmate?",dropDormState)
         Spacer(Modifier.padding(8.dp))
@@ -139,7 +138,7 @@ fun TSDisplay(){
             .padding(top = 32.dp),verticalArrangement = Arrangement.Center,horizontalAlignment = Alignment.CenterHorizontally) {
         var textString by remember { mutableStateOf("")}
         val tsStatus = remember { TextFieldState("") }
-        EditTextItem(desc = "Current Status",state = tsStatus,keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number))
+        EditTextItem(desc = "Current Status", string = tsStatus, keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number))
         Spacer(modifier = Modifier.padding(16.dp))
         ButtonClickItem(desc = "Calculate", onClick = { textString= if(tsStatus.text.isEmpty())"Please the the field" else tsmaxplunder(tsStatus.text.filter { it.isLetterOrDigit()}.toLong(),ts) })
         Spacer(modifier = Modifier.padding(8.dp))
@@ -154,7 +153,7 @@ fun MaxPlunderDisplay(){
             .padding(top = 32.dp),verticalArrangement = Arrangement.Center,horizontalAlignment = Alignment.CenterHorizontally) {
         var textString by remember { mutableStateOf("")}
         val statusState = remember { TextFieldState("") }
-        EditTextItem(desc = "Current Status",state = statusState,keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number))
+        EditTextItem(desc = "Current Status", string = statusState, keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number))
         Spacer(modifier = Modifier.padding(16.dp))
         ButtonClickItem(desc = "Calculate", onClick = { textString= if(statusState.text.isEmpty())"Please the the field" else tsmaxplunder(statusState.text.filter { it.isLetterOrDigit()}.toLong(),
             maxplunder) })
