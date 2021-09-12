@@ -1,8 +1,6 @@
 package com.upar24.chattingtrading.ui.component
 
 import androidx.compose.runtime.*
-import androidx.compose.ui.text.TextRange
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.upar24.chattingtrading.ui.auth.AuthViewModel
@@ -65,15 +63,24 @@ class TextFieldState(string: String=""){
     var text : String by mutableStateOf(string)
 }
 
-fun getTimePost(timePost:Long):String{
-    val endTime= System.currentTimeMillis()
-    val diff= (endTime - timePost) / 1000
-    val date: String
-    if(diff >= 86400){date=if((diff<172799)) "1 day" else "${NumberFormat.getNumberInstance().format(diff/86400)} days"}
-    else if(diff >= 3600){date=if((diff<7199))"1 hour" else "${NumberFormat.getNumberInstance().format(diff/3600)} hours"}
-    else if(diff >= 60) {date=if((diff<119))"1 minute" else "${NumberFormat.getNumberInstance().format(diff/60)} minutes"}
-    else date=if((diff == 1.toLong()))"1 second" else "${NumberFormat.getNumberInstance().format(diff)} seconds"
-    return date
+fun getTimePost(timePost: Long): String {
+    val endTime = System.currentTimeMillis()
+    val diff = (endTime - timePost) / 1000
+    return if (diff >= 86400) {
+        if ((diff < 172799)) "1 day" else "${
+            NumberFormat.getNumberInstance().format(diff / 86400)
+        } days"
+    } else if (diff >= 3600) {
+        if ((diff < 7199)) "1 hour" else "${
+            NumberFormat.getNumberInstance().format(diff / 3600)
+        } hours"
+    } else if (diff >= 60) {
+        if ((diff < 119)) "1 minute" else "${
+            NumberFormat.getNumberInstance().format(diff / 60)
+        } minutes"
+    } else if ((diff == 1.toLong())) "1 second" else "${
+        NumberFormat.getNumberInstance().format(diff)
+    } seconds"
 }
 @Composable
 fun getUsernameLoginFunction():String{
@@ -117,8 +124,11 @@ fun hoppingValueFunction(init:Long,limit:Long,request:String):String{
         }
     }
 
-    return if(request =="A") NumberFormat.getNumberInstance().format(hoppingTimes)
-    else if(request=="B") NumberFormat.getNumberInstance().format(interest) else NumberFormat.getNumberInstance().format(initValue)
+    return when (request) {
+        "A" -> NumberFormat.getNumberInstance().format(hoppingTimes)
+        "B" -> NumberFormat.getNumberInstance().format(interest)
+        else -> NumberFormat.getNumberInstance().format(initValue)
+    }
 }
 fun upgradeFunction(current:Long,drop:Long,hire:Long):String{
     return NumberFormat.getNumberInstance().format(current - drop + hire)
