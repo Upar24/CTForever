@@ -73,6 +73,8 @@ fun DvpDisplay(){
         EditTextItem(desc = init,string =initState,keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number))
         Spacer(Modifier.padding(8.dp))
         EditTextItem(desc = limit,string =limitState,keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number))
+        Spacer(modifier = Modifier.padding(8.dp))
+        Text(textString,color = MaterialTheme.colors.primaryVariant,style = MaterialTheme.typography.h2)
         Spacer(Modifier.padding(16.dp))
         Row(horizontalArrangement = Arrangement.SpaceBetween,verticalAlignment = Alignment.CenterVertically){
             ButtonClickItem(
@@ -103,8 +105,6 @@ fun DvpDisplay(){
                 colors=if(visibleDvp==result)ButtonDefaults.buttonColors( MaterialTheme.colors.background ) else ButtonDefaults.buttonColors(MaterialTheme.colors.primary)
             )
         }
-        Spacer(modifier = Modifier.padding(8.dp))
-        Text(textString,color = MaterialTheme.colors.primaryVariant,style = MaterialTheme.typography.h2)
 
     }
 }
@@ -118,16 +118,17 @@ fun UpgradeDisplay(){
         val currentStatusState = remember { TextFieldState("") }
         val dropDormState = remember { TextFieldState(nope) }
         val hireDormState = remember { TextFieldState(nope) }
-        EditTextItem(desc = "Current Status", string = currentStatusState, keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number))
+        EditTextItem(desc = "Current Combine Status", string = currentStatusState, keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number))
         Spacer(Modifier.padding(8.dp))
         DropDownListItem(desc = "Drop a dormmate?",dropDormState)
         Spacer(Modifier.padding(8.dp))
         DropDownListItem(desc = "Hiring a dormmate?",hireDormState)
+        Spacer(modifier = Modifier.padding(8.dp))
+        Text(textString,color = MaterialTheme.colors.primaryVariant,style = MaterialTheme.typography.h2)
         Spacer(modifier = Modifier.padding(16.dp))
         ButtonClickItem(desc = "Calculate", onClick = { textString= if(currentStatusState.text.isEmpty())"Please the the field" else upgradeFunction(currentStatusState.text.filter { it.isLetterOrDigit()}.toLong(),
             valueOfTheTier(dropDormState.text), valueOfTheTier(hireDormState.text)) })
-        Spacer(modifier = Modifier.padding(8.dp))
-        Text(textString,color = MaterialTheme.colors.primaryVariant,style = MaterialTheme.typography.h2)
+
     }
 }
 @Composable
@@ -138,11 +139,11 @@ fun TSDisplay(){
             .padding(top = 32.dp),verticalArrangement = Arrangement.Center,horizontalAlignment = Alignment.CenterHorizontally) {
         var textString by remember { mutableStateOf("")}
         val tsStatus = remember { TextFieldState("") }
-        EditTextItem(desc = "Current Status", string = tsStatus, keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number))
-        Spacer(modifier = Modifier.padding(16.dp))
-        ButtonClickItem(desc = "Calculate", onClick = { textString= if(tsStatus.text.isEmpty())"Please the the field" else tsmaxplunder(tsStatus.text.filter { it.isLetterOrDigit()}.toLong(),ts) })
+        EditTextItem(desc = "Current Price of Tutor", string = tsStatus, keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number))
         Spacer(modifier = Modifier.padding(8.dp))
         Text(textString,color = MaterialTheme.colors.primaryVariant,style = MaterialTheme.typography.h2)
+        Spacer(modifier = Modifier.padding(16.dp))
+        ButtonClickItem(desc = "Calculate", onClick = { textString= if(tsStatus.text.isEmpty())"Please the the field" else tsmaxplunder(tsStatus.text.filter { it.isLetterOrDigit()}.toLong(),ts) })
     }
 }
 @Composable
@@ -153,11 +154,11 @@ fun MaxPlunderDisplay(){
             .padding(top = 32.dp),verticalArrangement = Arrangement.Center,horizontalAlignment = Alignment.CenterHorizontally) {
         var textString by remember { mutableStateOf("")}
         val statusState = remember { TextFieldState("") }
-        EditTextItem(desc = "Current Status", string = statusState, keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number))
+        EditTextItem(desc = "Current Combine Status", string = statusState, keyboard = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number))
+        Spacer(modifier = Modifier.padding(8.dp))
+        Text(textString,color = MaterialTheme.colors.primaryVariant,style = MaterialTheme.typography.h2)
         Spacer(modifier = Modifier.padding(16.dp))
         ButtonClickItem(desc = "Calculate", onClick = { textString= if(statusState.text.isEmpty())"Please the the field" else tsmaxplunder(statusState.text.filter { it.isLetterOrDigit()}.toLong(),
             maxplunder) })
-        Spacer(modifier = Modifier.padding(8.dp))
-        Text(textString,color = MaterialTheme.colors.primaryVariant,style = MaterialTheme.typography.h2)
     }
 }

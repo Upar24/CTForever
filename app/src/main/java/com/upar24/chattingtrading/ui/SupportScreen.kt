@@ -13,11 +13,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.upar24.chattingtrading.R
 import com.upar24.chattingtrading.ui.component.AdvertView
+import com.upar24.chattingtrading.ui.component.DividerIklan
 
 @Composable
 fun SupportScreen(){
-    Column (Modifier.fillMaxSize().padding(top=12.dp,bottom=60.dp,start = 12.dp,end = 12.dp),horizontalAlignment = Alignment.CenterHorizontally){
+    Column (
+        Modifier
+            .fillMaxSize()
+            .padding(top = 12.dp, bottom = 60.dp, start = 12.dp, end = 12.dp),horizontalAlignment = Alignment.CenterHorizontally){
         AdvertView()
+        DividerIklan()
         Row(Modifier.fillMaxWidth(),horizontalArrangement = Arrangement.Start,verticalAlignment = Alignment.CenterVertically){
             Image(painter=painterResource(R.drawable.instagram),modifier=Modifier.size(48.dp),contentDescription="")
             Spacer(Modifier.padding(5.dp))

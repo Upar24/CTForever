@@ -166,7 +166,7 @@ fun AddScreen(navController: NavHostController){
             }
         }
         AdvertView()
-        Spacer(Modifier.padding(16.dp))
+        Spacer(Modifier.padding(8.dp))
         TextFieldOutlined(desc = search,queryState)
         Spacer(modifier = Modifier.padding(8.dp))
         Row (Modifier.fillMaxWidth(),

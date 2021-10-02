@@ -19,12 +19,3 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
--keep class com.example.ctf.data.local.entities.* {*;}
--keep class com.example.ctf.data.remote.requests.* {*;}
--keep class com.example.ctf.data.remote.responses* {*;}
--assumenosideeffects class android.util.Log {
-public static boolean isLoggable(java.lang.String, int);
-public static int v(...);
-public static int d(...);
-public static int i(...);
-}

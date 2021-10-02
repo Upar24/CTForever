@@ -122,6 +122,13 @@ fun DividerItem(){
     )
 }
 @Composable
+fun DividerIklan(){
+    Divider(
+        color = MaterialTheme.colors.onSurface.copy(alpha = .2f),
+        modifier = Modifier.padding(start = 12.dp, end = 12.dp, bottom = 10.dp,top=10.dp)
+    )
+}
+@Composable
 fun SwitchTOLoginOrRegisterTexts(modifier: Modifier,text1: String,text2: String,onClick: () -> Unit) {
     Row(
         modifier = modifier,
@@ -314,7 +321,7 @@ fun ChatCard(chat: Chat, navController: NavHostController){
         backgroundColor = MaterialTheme.colors.secondary
     ){
         Column(Modifier.padding(8.dp)) {
-            HeaderCardItem(text1 = getTimePost(chat.date), text2 = chat.username.toString(), text3 = chat.clubName.toString(),navController)
+            HeaderCardItem(text1 = "${getTimePost(chat.date)} ago", text2 = chat.username.toString(), text3 = chat.clubName.toString(),navController)
             DividerItem()
             Text(chat.chat.toString(),textAlign= TextAlign.Justify,color=MaterialTheme.colors.onBackground,style=MaterialTheme.typography.body1)
         }
@@ -330,7 +337,8 @@ fun TradingCard(username:String, trading: Trading, editClick: () -> Unit, delete
     {
         Column(Modifier.padding(8.dp)) {
 
-            HeaderCardItem(getTimePost(trading.date),trading.username.toString(),trading.ign.toString(),navController)
+            HeaderCardItem("${getTimePost(trading.date)} ago",trading.username.toString(),
+                if(trading.ign == "") "IGN" else trading.ign ?: "IGN",navController)
             DividerItem()
             Row(Modifier.fillMaxWidth(),horizontalArrangement = Arrangement.SpaceBetween,Alignment.CenterVertically){
                 Row(Modifier.weight(5f),horizontalArrangement = Arrangement.Start,verticalAlignment = Alignment.CenterVertically){
@@ -345,14 +353,18 @@ fun TradingCard(username:String, trading: Trading, editClick: () -> Unit, delete
                     }
                 }
             }
-            Spacer(Modifier.padding(2.dp))
+            Spacer(Modifier.padding(5.dp))
             TwoTextItem("Description", trading.desc.toString())
-            Spacer(Modifier.padding(2.dp))
+            Spacer(Modifier.padding(5.dp))
             Row(
                 Modifier
                     .fillMaxWidth(),horizontalArrangement =Arrangement.SpaceBetween){
-                TwoTextItem("Buying", "${trading.amountBuying} ${trading.itemBuying}" )
-                TwoTextItem("Selling", "${trading.amountSelling} ${trading.itemSelling}" )
+                Row(Modifier.weight(1f),horizontalArrangement = Arrangement.Start){
+                    TwoTextItem("Buying", "${trading.amountBuying} ${trading.itemBuying}" )
+                }
+                Row(Modifier.weight(1f),horizontalArrangement = Arrangement.End){
+                    TwoTextItem("Selling", "${trading.amountSelling} ${trading.itemSelling}" )
+                }
             }
         }
     }
@@ -396,7 +408,7 @@ fun WallCard(wall: Wall?, onWall: () -> Unit, onDelete:() ->Unit, navController:
     ) {
         Column (Modifier.padding(8.dp),horizontalAlignment= CenterHorizontally,verticalArrangement = Arrangement.Center){
             wall?.let {
-                HeaderCardItem(text1 = getTimePost(it.date), text2 = it.username.toString(), text3 =it.ign.toString(),navController)
+                HeaderCardItem(text1 = "${getTimePost(it.date)} ago", text2 = it.username.toString(), text3 =it.ign ?: "IGN",navController)
                 DividerItem()
                 Row(Modifier.fillMaxWidth(), Arrangement.Center,verticalAlignment= Alignment.CenterVertically) {
                     Row(Modifier.weight(5f),Arrangement.Start,verticalAlignment=Alignment.CenterVertically){
@@ -818,14 +830,28 @@ fun AdvertView(modifier: Modifier = Modifier) {
         )
     } else {
         AndroidView(
-            modifier = modifier.fillMaxWidth(),
+            modifier = modifier,
             factory = { context ->
                 AdView(context).apply {
                     adSize = AdSize.BANNER
-                    adUnitId = "ca-app-pub-9520915968199258/4243097496"
+                    adUnitId = "ca-app-pub-9520915968199258/4268293438"
                     loadAd(AdRequest.Builder().build())
                 }
             }
         )
+    }
+}
+@Composable
+fun CardTipsTrick(title:String, credit:String,modifier : Modifier = Modifier){
+    Card(
+        border = BorderStroke(1.dp, MaterialTheme.colors.primaryVariant),
+        shape = RoundedCornerShape(8.dp),
+        backgroundColor = MaterialTheme.colors.secondary,
+        modifier = modifier
+    ){
+        Row(Modifier.fillMaxWidth(1f),horizontalArrangement = Arrangement.SpaceBetween){
+            Text(title)
+            Text(credit)
+        }
     }
 }

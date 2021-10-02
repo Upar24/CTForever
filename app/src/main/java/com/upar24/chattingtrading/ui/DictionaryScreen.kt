@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.upar24.chattingtrading.ui.component.AdvertView
+import com.upar24.chattingtrading.ui.component.DividerIklan
 import com.upar24.chattingtrading.ui.component.DividerItem
 import com.upar24.chattingtrading.ui.component.TermTextItem
 
@@ -15,9 +16,11 @@ import com.upar24.chattingtrading.ui.component.TermTextItem
 fun DictionaryScreen(){
     Column {
         AdvertView()
-        Spacer(modifier = Modifier.padding(4.dp))
+        DividerIklan()
         Row(
-            Modifier.fillMaxWidth().padding(end=16.dp),horizontalArrangement = Arrangement.End
+            Modifier
+                .fillMaxWidth()
+                .padding(end = 16.dp),horizontalArrangement = Arrangement.End
         ){Text("Credit : Bird")}
         DividerItem()
         Column(

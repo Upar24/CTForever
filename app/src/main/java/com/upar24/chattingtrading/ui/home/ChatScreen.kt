@@ -142,7 +142,7 @@ fun ChatScreen(navController: NavHostController) {
                             start.linkTo(parent.start)
                             top.linkTo(spacerText.bottom)
                             end.linkTo(parent.end)
-                        }
+                        }.padding(bottom=60.dp)
                         .verticalScroll(rememberScrollState())
                 ) {
                     listChatDisplay.forEach { chat ->

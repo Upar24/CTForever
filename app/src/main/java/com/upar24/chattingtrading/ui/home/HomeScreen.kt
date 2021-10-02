@@ -1,9 +1,6 @@
 package com.upar24.chattingtrading.ui.home
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
@@ -32,35 +29,37 @@ fun HomeScreen(navController: NavHostController
     Column(
         Modifier
             .fillMaxSize()
-            .padding(start = 8.dp, end = 8.dp, top = 8.dp, bottom = 60.dp)
-    ) {
-
-        AdvertView()
-        var tabIndex by remember { mutableStateOf(1)}
-        val homeItem = listOf(partychar, calculation,chatchar)
-        TabRow(selectedTabIndex = tabIndex,Modifier.fillMaxWidth(),
-            backgroundColor = Color.Transparent) {
-            homeItem.forEachIndexed { index,text ->
-                Tab(selected=tabIndex==index,onClick={
-                    tabIndex=index
-                    visibleHome=text
-                },text={
-                    Text(text,color=if (visibleHome == text) MaterialTheme.colors.primary else MaterialTheme.colors.onBackground,
-                        style = if (visibleHome == text) MaterialTheme.typography.h2 else MaterialTheme.typography.button
-                    )
-                })
+            .padding(start = 8.dp, end = 8.dp, top = 8.dp, bottom = 60.dp),
+        verticalArrangement = Arrangement.SpaceBetween
+    ){
+        Column{
+            var tabIndex by remember { mutableStateOf(1)}
+            val homeItem = listOf(partychar, calculation,chatchar)
+            TabRow(selectedTabIndex = tabIndex,Modifier.fillMaxWidth(),
+                backgroundColor = Color.Transparent) {
+                homeItem.forEachIndexed { index,text ->
+                    Tab(selected=tabIndex==index,onClick={
+                        tabIndex=index
+                        visibleHome=text
+                    },text={
+                        Text(text,color=if (visibleHome == text) MaterialTheme.colors.primary else MaterialTheme.colors.onBackground,
+                            style = if (visibleHome == text) MaterialTheme.typography.h2 else MaterialTheme.typography.button
+                        )
+                    })
+                }
+            }
+            if(visibleHome== partychar){
+                homeVM.getToday()
+                homeVM.getDropList()
+                homeVM.getPartyList(arts)
+                PartyScreen(navController)
+            }else if(visibleHome== chatchar){
+                homeVM.getChat()
+                ChatScreen(navController)
+            }else{
+                CalculationScreen()
             }
         }
-        if(visibleHome== partychar){
-            homeVM.getToday()
-            homeVM.getDropList()
-            homeVM.getPartyList(arts)
-            PartyScreen(navController)
-        }else if(visibleHome== chatchar){
-            homeVM.getChat()
-            ChatScreen(navController)
-        }else{
-            CalculationScreen()
-        }
+        AdvertView()
     }
 }

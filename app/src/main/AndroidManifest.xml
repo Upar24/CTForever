@@ -17,7 +17,7 @@
         android:theme="@style/Theme.ChattingTrading">
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-9520915968199258~2350942659"/>
+            android:value="ca-app-pub-9520915968199258~3380579565"/>
         <activity
             android:name=".MainActivity"
             android:windowSoftInputMode="adjustResize"

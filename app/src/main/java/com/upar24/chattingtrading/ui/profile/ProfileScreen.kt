@@ -43,8 +43,6 @@ fun ProfileScreen(navController: NavHostController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        AdvertView()
-        Spacer(Modifier.padding(2.dp))
         val authVM = hiltViewModel<AuthViewModel>()
         val profileVM = hiltViewModel<ProfileViewModel>()
         val addVM = hiltViewModel<AddViewModel>()
@@ -205,11 +203,14 @@ fun ProfileScreen(navController: NavHostController) {
                             }
                             .padding(0.dp)
                     )
-                    Column(Modifier.constrainAs(wallConstraint){
-                        start.linkTo(parent.start)
-                        top.linkTo(spacerText.bottom)
-                        end.linkTo(parent.end)
-                    }) {
+                    Column(
+                        Modifier
+                            .constrainAs(wallConstraint) {
+                                start.linkTo(parent.start)
+                                top.linkTo(spacerText.bottom)
+                                end.linkTo(parent.end)
+                            }
+                            .padding(bottom = 60.dp)) {
                         WallList(
                             wallList, navController,Modifier
                                 .verticalScroll(rememberScrollState()))

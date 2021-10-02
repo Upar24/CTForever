@@ -44,7 +44,7 @@ fun SearchScreen(navController: NavHostController){
         var visibleScreen by remember { mutableStateOf("") }
 
         val searchState = remember { TextFieldState("") }
-        Spacer(Modifier.padding(16.dp))
+        Spacer(Modifier.padding(8.dp))
         TextFieldOutlined(desc = search,searchState)
         Spacer(Modifier.padding(8.dp))
         Text("Search for",style=MaterialTheme.typography.body1)
